@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+<session-factory>
+<property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
+<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+<property name="hibernate.connection.url">jdbc:mysql://localhost/chickensaledb</property>
+<property name="hibernate.connection.username">root</property>
+<property name="hibernate.connection.password">19942512</property>
+<property name="hibernate.hbm2ddl.auto">update</property>
+<property name="show_sql">false</property>
+<property name="lazy">false</property>
+<property name="hibernate.current_session_context_class">thread</property>
+<mapping class="ua.goryainov.hibernate.model.Administration" />
+<mapping class="ua.goryainov.hibernate.model.User" />
+<mapping class="ua.goryainov.hibernate.model.Action" />
+<mapping class="ua.goryainov.hibernate.model.ActionType" />
+<mapping class="ua.goryainov.hibernate.model.Commission" />
+<mapping class="ua.goryainov.hibernate.model.OrderProduct" />
+<mapping class="ua.goryainov.hibernate.model.Product" />
+<mapping class="ua.goryainov.hibernate.model.Status" />
+</session-factory>
+</hibernate-configuration>
