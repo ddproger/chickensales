@@ -27,6 +27,7 @@ public class User {
 	private String tel1;
 	private String tel2;
 	private String deliveryAdress;
+	private long rating;
 	private Set<Action> actionList = new HashSet<Action>();
 	private Set<Commission> orderList = new HashSet<Commission>();
     
@@ -39,6 +40,7 @@ public class User {
 		this.tel1 = "";
 		this.tel2 = "";
 		this.deliveryAdress = "";
+		this.rating = 0;
 	}
 
 	public User(String login, String password) {
@@ -47,7 +49,7 @@ public class User {
 	}
 	public User(String login, String password,String name,
 				String EDRPOU, String mail, String tel1, 
-				String tel2, String deliveryAdress) {
+				String tel2, String deliveryAdress, long rating) {
 		this(login, password);
 		this.name = name;
 		this.EDRPOU = EDRPOU;
@@ -55,6 +57,7 @@ public class User {
 		this.tel1 = tel1;
 		this.tel2 = tel2;
 		this.deliveryAdress = deliveryAdress;
+		this.rating = rating;
 	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -94,6 +97,10 @@ public class User {
 	public String getDeliveryAdress() {
 		return deliveryAdress;
 	}
+	@Column(name = "rating")
+	public long getRating() {
+		return rating;
+	}
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")//, cascade = CascadeType.ALL, orphanRemoval = true)
     public Set<Action> getActions() {
         return this.actionList;
@@ -132,9 +139,13 @@ public class User {
 
 	public void setDeliveryAdress(String deliveryAdress) {
 		this.deliveryAdress = deliveryAdress;
-	}	
- 
-    public void setContactTelDetails(Set<Action> actionList) {
+	}
+	public void setRating(long rating) {
+		this.rating = rating;
+	}
+
+
+	public void setContactTelDetails(Set<Action> actionList) {
         this.actionList = actionList;
     }
     public void setActions(Set<Action> actionList) {
@@ -148,6 +159,6 @@ public class User {
 		return "User [userId=" + userId + "login=" + login + ", password=" + password + 
 						", name=" + name + ", mail=" + 
 						mail + ", EDRPOU=" + EDRPOU + 
-						", tel1=" + tel1 + ", tel2=" + tel2 + ", deliveryAdress=" + deliveryAdress +"]";
+						", tel1=" + tel1 + ", tel2=" + tel2 + ", deliveryAdress=" + deliveryAdress +", rating=" + rating +"]";
 	}
 }

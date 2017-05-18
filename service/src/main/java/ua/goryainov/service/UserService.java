@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import ua.goryainov.hibernate.dao.UserDaoImpl;
+import ua.goryainov.hibernate.model.TopUser;
 import ua.goryainov.hibernate.model.User;
 
 public class UserService {
@@ -41,6 +42,12 @@ public class UserService {
 	public List<User> findAll() {
 		userDao.openCurrentSession();
 		List<User> users = userDao.findAll();
+		userDao.closeCurrentSession();
+		return users;
+	}
+	public List<TopUser> findTop(){
+		userDao.openCurrentSession();
+		List<TopUser> users = userDao.findTop();
 		userDao.closeCurrentSession();
 		return users;
 	}

@@ -50,6 +50,6 @@ public class ActionType {
     }    
     @Override
 	public String toString() {
-		return "ActionType [name=" + name + "]";
+		return "actionType [name=" + name + "]";
 	}
 }

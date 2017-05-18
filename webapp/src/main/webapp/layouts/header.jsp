@@ -79,7 +79,12 @@
 					 class="selected"
 					</c:if>>
 			<a href="planing">Планування</a>
-		</li>	
+		</li>
+		<li <c:if test="${currentPage == 'rating'}">
+        					 class="selected"
+        					</c:if>>
+        			<a href="rating">Рейтинг</a>
+        </li>
 		</c:if>
 		
 		</ul>

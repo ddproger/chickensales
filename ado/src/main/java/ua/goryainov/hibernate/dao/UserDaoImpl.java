@@ -1,4 +1,5 @@
 package ua.goryainov.hibernate.dao;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -7,6 +8,9 @@ import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
+import ua.goryainov.hibernate.model.Commission;
+import ua.goryainov.hibernate.model.OrderProduct;
+import ua.goryainov.hibernate.model.TopUser;
 import ua.goryainov.hibernate.model.User;
 
 public class UserDaoImpl implements TablesDao<User, Integer> {
@@ -79,6 +83,21 @@ public class UserDaoImpl implements TablesDao<User, Integer> {
 		List<User> users = (List<User>) getCurrentSession().createQuery("from User").list();
 		return users;
 	}
+	public List<TopUser> findTop() {
+		List<User> users = (List<User>) getCurrentSession().createQuery("from User").list();
+		List<TopUser> topUser = new ArrayList<>();
+		long cash = 0;
+		for (User user:users) {
+			for (Commission orders: user.getOrders()) {
+				for (OrderProduct od : orders.getOrderProduct()){
+					cash += od.getPrice()*od.getCount();
+				}
+			}
+			topUser.add(new TopUser(user.getName(),user.getEDRPOU(),user.getMail(),user.getTel1(),user.getTel2(),user.getDeliveryAdress(),cash));
+		}
+		return topUser;
+
+	}
 
 	public void deleteAll() {
 		List<User> entityList = findAll();
@@ -89,5 +108,7 @@ public class UserDaoImpl implements TablesDao<User, Integer> {
 	public User findById(Integer id) {
 		User user = (User) getCurrentSession().get(User.class, id);
 		return user;
-	}	
+	}
+
+
 }
