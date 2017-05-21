@@ -29,6 +29,7 @@ public class User {
 	private String deliveryAdress;
 	private long rating;
 	private Set<Action> actionList = new HashSet<Action>();
+
 	private Set<Commission> orderList = new HashSet<Commission>();
     
 	public User() {
@@ -160,5 +161,9 @@ public class User {
 						", name=" + name + ", mail=" + 
 						mail + ", EDRPOU=" + EDRPOU + 
 						", tel1=" + tel1 + ", tel2=" + tel2 + ", deliveryAdress=" + deliveryAdress +", rating=" + rating +"]";
+	}
+
+	public void addRating(long rating) {
+		setRating(getRating()+rating);
 	}
 }

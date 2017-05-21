@@ -13,8 +13,14 @@
 <%@ include file="/layouts/header.jsp" %>
 <section style="text-align:center;" class="context">
 
-	<form method="POST" action='action' name="actionFrm">
-	
+	<form method="GET" action='rating'>
+	<label for="from">С:</label>
+	<input type="date" id="from" name="from"/>
+	<label for="to">По:</label>
+    <input type="date" id="to" name="to"/>
+    <input type="submit" value="Выбрать"/>
+	</form>
+
 	<table>
 	<tr>
 	<th>Особа</th>
@@ -24,6 +30,7 @@
 	<th>ЕДРПОУ</th>
 	<th>Контактний телефон</th>
 	<th>Альтернативний телефон</th>
+	<th>Рейтинг</th>
 	</tr>
 	<c:forEach var="user" varStatus="status" items="${users}">
     <tr>
@@ -55,16 +62,17 @@
     	<c:out value="${user.tel1}"/>
     </td>
     <td>
-    	<c:out value="${user.tel1}"/>
+    	<c:out value="${user.tel2}"/>
     </td>
     <td>
-        	<c:out value="${user.tel1}"/>
+        	<c:out value="${user.rating}"/>
      </td>
     </tr>
 	</c:forEach>
 	</table>
-	</form>
-	
+	<form method="GET" action='rating'>
+        <input type="submit" value="Сформировать отчет"/>
+    	</form>
 </section>
 <%@ include file="/layouts/footer.jsp" %>	
 </body>

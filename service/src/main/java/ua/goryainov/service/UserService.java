@@ -1,5 +1,7 @@
 package ua.goryainov.service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -45,9 +47,39 @@ public class UserService {
 		userDao.closeCurrentSession();
 		return users;
 	}
-	public List<TopUser> findTop(){
+	public List<User> findIndividum() {
 		userDao.openCurrentSession();
-		List<TopUser> users = userDao.findTop();
+		List<User> individumUser = new ArrayList<>();
+		List<User> users = userDao.findAll();
+		for (User user:users) {
+			if(user.getEDRPOU().equals("")){
+				individumUser.add(user);
+			}
+		}
+		userDao.closeCurrentSession();
+		return individumUser;
+	}
+	public List<User> findLegal() {
+		userDao.openCurrentSession();
+		List<User> individumUser = new ArrayList<>();
+		List<User> users = userDao.findAll();
+		for (User user:users) {
+			if(!user.getEDRPOU().equals("")){
+				individumUser.add(user);
+			}
+		}
+		userDao.closeCurrentSession();
+		return individumUser;
+	}
+	public List<User> findTop(){
+		userDao.openCurrentSession();
+		List<User> users = userDao.findTop();
+		userDao.closeCurrentSession();
+		return users;
+	}
+	public List<User> findTop(String from,String to){
+		userDao.openCurrentSession();
+		List<User> users = userDao.findTop(from,to);
 		userDao.closeCurrentSession();
 		return users;
 	}
@@ -68,5 +100,8 @@ public class UserService {
 	public UserDaoImpl userDao() {
 		return userDao;
 	}
+
+
+
 }
 

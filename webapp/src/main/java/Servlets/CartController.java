@@ -99,23 +99,28 @@ public class CartController extends HttpServlet {
 			Integer id = Integer.parseInt(userId.toString());
 			User user = userService.findById(id);
 			if(user!=null){
-				Commission com = new Commission(userService.findById(id), 
+				Commission com = new Commission(user,
 						new Date(), 
 						request.getParameter("deliveryAdress"),
 						statusService.findById(1));
 				orderService.persist(com);
 				String[] darray=request.getParameterValues("id");
 				int productIdInt = 0;
+				int count = 0;
+				float price = 0;
+				long rating = 0;
 				for(String productId: darray){
 					if(!productId.equals("")){
 					productIdInt = Integer.parseInt(productId);
+					price = Float.parseFloat(request.getParameter("product"+productIdInt+"[price]"));
+					count = Integer.parseInt(request.getParameter("product"+productIdInt+"[count]"));
+					rating+=price*count;
 					orderProductService.persist(
-							new OrderProduct(com,
-											productService.findById(productIdInt),
-											Float.parseFloat(request.getParameter("product"+productIdInt+"[price]")),
-											Integer.parseInt(request.getParameter("product"+productIdInt+"[count]"))));
+							new OrderProduct(com,productService.findById(productIdInt),price,count));
 					}
 					}
+					user.addRating(rating);
+					userService.update(user);
 				if (cookies != null)
 			        for (int i = 0; i < cookies.length; i++) {
 			        	if(!cookies[i].getName().equals("JSESSIONID"))

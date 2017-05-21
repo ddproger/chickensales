@@ -35,7 +35,9 @@ public class RatingController extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setCharacterEncoding("UTF-8");
-		response.setContentType("text/html");		
+		response.setContentType("text/html");
+		String from = request.getParameter("from");
+		String to = request.getParameter("to");
 		Object adminId = request.getSession().getAttribute("admin");
 		if(adminId!=null){
 			Administration admin = adminService.findById(adminId.toString());
@@ -45,8 +47,12 @@ public class RatingController extends HttpServlet {
 		}
 		String forward = "";
 
-		List<TopUser> users;
-		users = userService.findTop();
+		List<User> users;
+		if(from!=null&&to!=null){
+			users = userService.findTop(from.toString(),to.toString());
+		}else{
+			users = userService.findTop();
+		}
 		request.setAttribute("users", users);
 		forward = SHOW_ALL;
 		request.setAttribute("currentPage", "rating");
@@ -58,6 +64,6 @@ public class RatingController extends HttpServlet {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		response.setContentType("text/html;charset=UTF-8");
-		
+
 	}
 }

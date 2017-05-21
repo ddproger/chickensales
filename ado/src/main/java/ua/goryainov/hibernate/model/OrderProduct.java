@@ -18,15 +18,16 @@ public class OrderProduct {
     private OrderProductId orderProductId;
 	private float price;
 	private int count;
-	
-	private Commission order;	
+	@ManyToOne
+	@JoinColumn( name = "orderId")
+	private Commission commission;
 	private Product product;
 	public OrderProduct(){
 		orderProductId=new OrderProductId();
 	}
 	public OrderProduct(Commission order, Product product,float price,int count){
 		orderProductId=new OrderProductId();
-		this.order=order;
+		this.commission=order;
 		this.product=product;
 		this.price=price;
 		this.count=count;
@@ -40,7 +41,7 @@ public class OrderProduct {
     @JoinColumn( name = "orderId",insertable = false, updatable = false)
 	@MapsId("orderId")
 	public Commission getCommission() {
-        return this.order;
+        return this.commission;
     }
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn( name = "productId", insertable = false, updatable = false)
@@ -58,7 +59,7 @@ public class OrderProduct {
         return this.count;
     }
 	public void setCommission(Commission order) {
-        this.order=order;
+        this.commission=order;
     }
 	public void setProduct(Product product){
         this.product = product;

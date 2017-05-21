@@ -13,16 +13,19 @@
 <%@ include file="/layouts/header.jsp" %>
 <section style="text-align:center;" class="context">
 
+    <a <c:if test = "${group==null}">style="color:white"</c:if> href="customers">Повний список</a>
+    <a <c:if test = "${group=='individium'}">style="color:white"</c:if> href="customers?group=individium">Фізичні особи</a>
+    <a <c:if test = "${group=='legal'}">style="color:white"</c:if> href="customers?group=legal">Юридичні особи</a>
 	<form method="POST" action='action' name="actionFrm">
 	
 	<table>
 	<tr>
 	<th>Відмітити</th>
-	<th>Особа</th>
+	<th <c:if test = "${group!=null}">hidden</c:if>>Особа</th>
 	<th>П.І.Б./Назва підприємства</th>
 	<th>Пошта</th>
 	<th>Адреса доставки</th>
-	<th>ЕДРПОУ</th>
+	<th <c:if test = "${group=='individium'}">hidden</c:if>>ЕДРПОУ</th>
 	<th>Контактний телефон</th>
 	<th>Альтернативний телефон</th>
 	</tr>
@@ -31,18 +34,18 @@
     <td>
     	<input type="checkbox" name="<c:out value="${user.userId}"/>">
     </td>
-    <td>
-    <c:choose>
-	  <c:when test="${user.EDRPOU != ''}">
-	   	Юридична особа
-	  </c:when>		
-	  <c:otherwise>
-			Фізична особа
-	  </c:otherwise>
-	</c:choose>
 
+            <td <c:if test = "${group!=null}">hidden</c:if>>
+            <c:choose>
+              <c:when test="${user.EDRPOU != ''}">
+                Юридична особа
+              </c:when>
+              <c:otherwise>
+                    Фізична особа
+              </c:otherwise>
+            </c:choose>
+            </td>
 
-    </td>
     <td>
     <a href="customers?id=<c:out value="${user.userId}"/>"><c:out value="${user.name}"/></a>
     </td>
@@ -52,7 +55,7 @@
      <td>
     	<c:out value="${user.deliveryAdress}"/>
     </td>
-     <td>
+     <td <c:if test = "${group=='individium'}">hidden</c:if>>
     	<c:out value="${user.EDRPOU}"/>
     </td>
     <td>

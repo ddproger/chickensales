@@ -5,16 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.hibernate.annotations.Type;
 
@@ -22,9 +13,12 @@ import org.hibernate.annotations.Type;
 @Table(name = "commission")
 public class Commission {
 	
-	private int orderId;	
-	private User user;	
-	private Date date;	
+	private int orderId;
+    @ManyToOne
+    @JoinColumn( name = "userId")
+	private User user;
+    @Temporal(TemporalType.DATE)
+    private Date date;
 	private String deliveryAdress;
 	private Status status;
 	private Set<OrderProduct> orderProductList = new HashSet<OrderProduct>(0);
@@ -50,7 +44,7 @@ public class Commission {
     public int getOrderId() {
         return this.orderId;
     }
-	
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn( name = "userId")
     public User getUser() {

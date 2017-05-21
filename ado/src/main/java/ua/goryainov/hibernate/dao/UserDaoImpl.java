@@ -1,7 +1,10 @@
 package ua.goryainov.hibernate.dao;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.temporal.Temporal;
+import java.util.*;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -12,6 +15,8 @@ import ua.goryainov.hibernate.model.Commission;
 import ua.goryainov.hibernate.model.OrderProduct;
 import ua.goryainov.hibernate.model.TopUser;
 import ua.goryainov.hibernate.model.User;
+
+import javax.persistence.TemporalType;
 
 public class UserDaoImpl implements TablesDao<User, Integer> {
 	private Session currentSession;
@@ -83,22 +88,49 @@ public class UserDaoImpl implements TablesDao<User, Integer> {
 		List<User> users = (List<User>) getCurrentSession().createQuery("from User").list();
 		return users;
 	}
-	public List<TopUser> findTop() {
-		List<User> users = (List<User>) getCurrentSession().createQuery("from User").list();
-		List<TopUser> topUser = new ArrayList<>();
-		long cash = 0;
-		for (User user:users) {
-			for (Commission orders: user.getOrders()) {
-				for (OrderProduct od : orders.getOrderProduct()){
-					cash += od.getPrice()*od.getCount();
-				}
-			}
-			topUser.add(new TopUser(user.getName(),user.getEDRPOU(),user.getMail(),user.getTel1(),user.getTel2(),user.getDeliveryAdress(),cash));
-		}
-		return topUser;
+	public List<User> findTop() {
+		List<User> users = (List<User>) getCurrentSession().createQuery("from User order by rating desc").list();
+		return users;
 
 	}
 
+	public List<User> findTop(String from, String to) {
+		//Object users =  getCurrentSession().createQuery("select u from OrderProduct o inner join o.commission as c inner join c.user as u group u, u.orderList").list();
+		//Object users =  getCurrentSession().createQuery("select u from User u right join u.orderList").list();
+		SimpleDateFormat sf=new SimpleDateFormat("yyyy-MM-dd");
+//		Date fromDate=null;
+//		String toDate=null;
+		Date fromDate = null;
+		Date toDate = null;
+		try {
+			fromDate = sf.parse(from);
+			toDate =sf.parse(to);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		String hql= "select u from Commission c inner join c.user as u where c.date BETWEEN :frmdate and :todate group by u";
+		Query query = getCurrentSession().createQuery(hql);
+		query.setParameter("frmdate", fromDate);
+		query.setParameter("todate", toDate);
+		List<User> users = (List<User>) query.list();
+		//List<User> users = (List<User>) getCurrentSession().createQuery("select u from Commission c inner join c.user as u where c.date BETWEEN"+fromDate+" and "+toDate+" group by u").list();
+		long rating = 0;
+		for (User user : users) {
+			for (Commission commission : user.getOrders())
+				for (OrderProduct orderProduct : commission.getOrderProduct()) {
+					rating +=orderProduct.getCount()*orderProduct.getPrice();
+				}
+				user.setRating(rating);
+			rating = 0;
+		}
+		Collections.sort(users, new Comparator<User>() {
+			@Override
+			public int compare(User user, User t1) {
+				if(user.getRating()>t1.getRating())return -1;else return 1;
+			}
+		});
+		return users;
+	}
 	public void deleteAll() {
 		List<User> entityList = findAll();
 		for (User entity : entityList) {

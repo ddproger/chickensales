@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jasper.tagplugins.jstl.core.If;
 import ua.goryainov.hibernate.model.ActionType;
 import ua.goryainov.hibernate.model.Administration;
 import ua.goryainov.hibernate.model.User;
@@ -63,8 +64,20 @@ public class UserController extends HttpServlet {
 			request.setAttribute("statuses", statusService.findAll());
 			forward = SHOW;
 		}else{
-		List<User> users = new ArrayList<User>();	
-		users = userService.findAll();
+			String group = request.getParameter("group");
+			List<User> users = new ArrayList<User>();
+			if(group != null && !group.equals("")){
+
+				if(group.equals("individium")){
+					request.setAttribute("group","individium");
+					users = userService.findIndividum();
+				}else if(group.equals("legal")){
+					request.setAttribute("group","legal");
+					users = userService.findLegal();
+				}
+			}else {
+				users = userService.findAll();
+			}
 		request.setAttribute("users", users);
 		List<ActionType> actionTypes = new ArrayList<ActionType>();
 		actionTypes = actionTypeService.findAll();
