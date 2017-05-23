@@ -85,12 +85,23 @@ public class UserDaoImpl implements TablesDao<User, Integer> {
 
 	@SuppressWarnings("unchecked")
 	public List<User> findAll() {
-		List<User> users = (List<User>) getCurrentSession().createQuery("from User").list();
+		List<User> users = (List<User>) getCurrentSession().createQuery("from User u order by u.rating desc").list();
+		int count=0;
+		for (User user : users) {
+			if(count<2){
+				user.setGroup(1);
+			}else if(count<5)
+			{
+				user.setGroup(2);
+			}else if (count<10){
+				user.setGroup(3);
+			}count++;
+		}
 		return users;
 	}
 	public List<User> findTop() {
-		List<User> users = (List<User>) getCurrentSession().createQuery("from User order by rating desc").list();
-		return users;
+		//List<User> users = (List<User>) getCurrentSession().createQuery("from User order by rating desc").list();
+		return findAll();
 
 	}
 
@@ -108,14 +119,23 @@ public class UserDaoImpl implements TablesDao<User, Integer> {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		String hql= "select u from Commission c inner join c.user as u where c.date BETWEEN :frmdate and :todate group by u";
+		String hql= "select u from Commission c inner join c.user as u where c.date BETWEEN :frmdate and :todate group by u order by u.rating desc";
 		Query query = getCurrentSession().createQuery(hql);
 		query.setParameter("frmdate", fromDate);
 		query.setParameter("todate", toDate);
 		List<User> users = (List<User>) query.list();
 		//List<User> users = (List<User>) getCurrentSession().createQuery("select u from Commission c inner join c.user as u where c.date BETWEEN"+fromDate+" and "+toDate+" group by u").list();
 		long rating = 0;
+		int count=0;
 		for (User user : users) {
+			if(count<2){
+				user.setGroup(1);
+			}else if(count<5)
+			{
+				user.setGroup(2);
+			}else if (count<10){
+				user.setGroup(3);
+			}count++;
 			for (Commission commission : user.getOrders())
 				for (OrderProduct orderProduct : commission.getOrderProduct()) {
 					rating +=orderProduct.getCount()*orderProduct.getPrice();

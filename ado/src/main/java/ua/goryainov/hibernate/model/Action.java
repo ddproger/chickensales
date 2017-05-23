@@ -18,8 +18,9 @@ import javax.persistence.Table;
 public class Action {
 	private int actionId;	
 	private String name;	
-	private String endDate;	
-	private Boolean complete;	
+	private String planingEndDate;
+    private String endDate;
+    private Boolean complete;
 	private User user;
 	private ActionType actionType;
 	public Action(){};
@@ -28,12 +29,14 @@ public class Action {
 		this.user = user;
 		this.complete = true;
 		this.endDate=new Date().toString();
+		this.planingEndDate = new Date().toString();
 	}
 	public Action(String name, User user,ActionType actionType){
 		this.name=name;
 		this.user = user;
 		this.complete = true;
 		this.endDate=new Date().toString();
+        this.planingEndDate=new Date().toString();
 		this.actionType=actionType;
 	}
     @ManyToOne(fetch = FetchType.EAGER)
@@ -56,9 +59,13 @@ public class Action {
     public String  getName(){
     	return this.name;
     }
+    @Column(name = "planingEndDate")
+    public String  getPlaningEndDate(){
+    	return this.planingEndDate;
+    }
     @Column(name = "endDate")
     public String  getEndDate(){
-    	return this.endDate;
+        return this.endDate;
     }
     @Column(name = "complete")
     public Boolean getComplete(){
@@ -69,6 +76,9 @@ public class Action {
     }
     public void setActionId(int actionId) {
         this.actionId = actionId;
+    }
+    public void setPlaningEndDate(String planingEndDate) {
+        this.planingEndDate = planingEndDate;
     }
     public void setEndDate(String endDate) {
         this.endDate = endDate;
@@ -84,6 +94,6 @@ public class Action {
     }
     @Override
 	public String toString() {
-		return "Action [name=" + name + ", endDate=" + endDate + ", complete=" + complete + ", user=" + user +  "]";
+		return "Action [name=" + name + ", planingEndDate=" + planingEndDate + ", endDate=" + endDate + ", complete=" + complete + ", user=" + user +  "]";
 	}
 }

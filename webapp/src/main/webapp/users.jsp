@@ -28,6 +28,7 @@
 	<th <c:if test = "${group=='individium'}">hidden</c:if>>ЕДРПОУ</th>
 	<th>Контактний телефон</th>
 	<th>Альтернативний телефон</th>
+	<th>Группа</th>
 	</tr>
 	<c:forEach var="user" varStatus="status" items="${users}">
     <tr>
@@ -64,6 +65,22 @@
     <td>
     	<c:out value="${user.tel1}"/>
     </td>
+            <td>
+                <c:choose>
+                  <c:when test="${user.group == 1}">
+                    A
+                  </c:when>
+                  <c:when test="${user.group == 2}">
+                    B
+                  </c:when>
+                  <c:when test="${user.group == 3}">
+                    C
+                  </c:when>
+                  <c:otherwise>
+                    D
+                  </c:otherwise>
+                </c:choose>
+                </td>
     </tr>
 	</c:forEach>
 	</table>

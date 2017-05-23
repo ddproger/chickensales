@@ -5,14 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "user")
@@ -28,6 +21,8 @@ public class User {
 	private String tel2;
 	private String deliveryAdress;
 	private long rating;
+	@Transient
+	private int group=0;
 	private Set<Action> actionList = new HashSet<Action>();
 
 	private Set<Commission> orderList = new HashSet<Commission>();
@@ -110,6 +105,12 @@ public class User {
     public Set<Commission> getOrders() {
         return this.orderList;
     }
+
+    @Transient
+	public int getGroup() {
+		return this.group;
+	}
+
 	public void setUserId(int userId) {
 		this.userId=userId;
 	}
@@ -145,6 +146,9 @@ public class User {
 		this.rating = rating;
 	}
 
+	public void setGroup(int group) {
+		this.group = group;
+	}
 
 	public void setContactTelDetails(Set<Action> actionList) {
         this.actionList = actionList;
