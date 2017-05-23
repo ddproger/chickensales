@@ -38,6 +38,7 @@ public class RatingController extends HttpServlet {
 		response.setContentType("text/html");
 		String from = request.getParameter("from");
 		String to = request.getParameter("to");
+		String action = request.getParameter("action");
 		Object adminId = request.getSession().getAttribute("admin");
 		if(adminId!=null){
 			Administration admin = adminService.findById(adminId.toString());
@@ -45,6 +46,9 @@ public class RatingController extends HttpServlet {
 				request.setAttribute("admin", admin);
 			}
 		}
+		request.setAttribute("from",from);
+		request.setAttribute("to",to);
+
 		String forward = "";
 
 		List<User> users;
@@ -52,6 +56,10 @@ public class RatingController extends HttpServlet {
 			users = userService.findTop(from.toString(),to.toString());
 		}else{
 			users = userService.findTop();
+		}
+		if(action!=null&&action.equals("import")) {
+			ExcelImportService.saveToFile(users,"webapp/src/main/webapp/tmp/newBook.xls");
+
 		}
 		request.setAttribute("users", users);
 		forward = SHOW_ALL;

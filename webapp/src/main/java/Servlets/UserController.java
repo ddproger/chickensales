@@ -16,12 +16,7 @@ import org.apache.jasper.tagplugins.jstl.core.If;
 import ua.goryainov.hibernate.model.ActionType;
 import ua.goryainov.hibernate.model.Administration;
 import ua.goryainov.hibernate.model.User;
-import ua.goryainov.service.ActionService;
-import ua.goryainov.service.ActionTypeService;
-import ua.goryainov.service.AdministrationService;
-import ua.goryainov.service.OrderService;
-import ua.goryainov.service.StatusService;
-import ua.goryainov.service.UserService;
+import ua.goryainov.service.*;
 
 @WebServlet("/customers")
 public class UserController extends HttpServlet {
@@ -67,6 +62,8 @@ public class UserController extends HttpServlet {
 		}else{
 			String group = request.getParameter("group");
 			List<User> users = new LinkedList<>();
+
+
 			if(group != null && !group.equals("")){
 
 				if(group.equals("individium")){
@@ -79,6 +76,7 @@ public class UserController extends HttpServlet {
 			}else {
 				users = userService.findAll();
 			}
+
 		request.setAttribute("users", users);
 		List<ActionType> actionTypes = new LinkedList<>();
 		actionTypes = actionTypeService.findAll();

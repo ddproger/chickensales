@@ -76,9 +76,7 @@
 
 	</c:forEach>
 	</table>
-	<form method="GET" action='rating'>
-        <input type="submit" value="Сформировать отчет"/>
-    	</form>
+	<a href='rating?action=import<c:if test = "${from!=null&&to!=null}">&from=<c:out value="${from}"/>&to=<c:out value="${to}"/></c:if>'>Сформировать отчет</a>
 </section>
 <%@ include file="/layouts/footer.jsp" %>	
 </body>
