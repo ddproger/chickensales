@@ -215,3 +215,7 @@ ul.horizontalMenu li {
 	width: 300px;
 	height:300px;
 }
+#users th, td{
+padding: 0 12px;
+margin: 12px 2px;
+}

@@ -2,6 +2,7 @@ package Servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -65,7 +66,7 @@ public class UserController extends HttpServlet {
 			forward = SHOW;
 		}else{
 			String group = request.getParameter("group");
-			List<User> users = new ArrayList<User>();
+			List<User> users = new LinkedList<>();
 			if(group != null && !group.equals("")){
 
 				if(group.equals("individium")){
@@ -79,7 +80,7 @@ public class UserController extends HttpServlet {
 				users = userService.findAll();
 			}
 		request.setAttribute("users", users);
-		List<ActionType> actionTypes = new ArrayList<ActionType>();
+		List<ActionType> actionTypes = new LinkedList<>();
 		actionTypes = actionTypeService.findAll();
 		request.setAttribute("actionTypes", actionTypes);
 		forward = SHOW_ALL;

@@ -23,7 +23,38 @@
 	<div>ЕДРПОУ: <c:out value="${user.EDRPOU}"/></div>
 	<div>Адреса: <c:out value="${user.deliveryAdress}"/></div>
 	<div>Телефон 1: <c:out value="${user.tel1}"/></div>
-	<div>Телефон 2: <c:out value="${user.tel2}"/></div>	
+	<div>Телефон 2: <c:out value="${user.tel2}"/></div>
+	<h2>Взаємодія з клієнтом</h2>
+	<table style="margin-left:35%;">
+    	<tr>
+    	<th>Виконано</th>
+    	<th>Клієнт</th>
+    	<th>Зміст</th>
+    	<th>Дата закінчення</th>
+    	<th>Тип</th>
+    	</tr>
+    	<c:forEach var="action" varStatus="status" items="${actions}">
+        <tr>
+         <td>
+         <input type="checkbox" <c:if test="${action.complete==true}">checked='checked'</c:if> />
+        </td>
+
+         <td>
+        	<c:out value="${action.user.name}"/>
+        </td>
+            <td>
+        	<c:out value="${action.name}"/>
+        </td>
+         <td>
+        	<c:out value="${action.endDate}"/>
+        </td>
+        <td>
+        	<c:out value="${action.actionType.name}"/>
+        </td>
+
+        </tr>
+    	</c:forEach>
+    	</table>
 	<h2>Акції Кліента</h2>
 	<c:forEach var="action" items="${actions}">
 	<div>Назва: <c:out value="${action.name}"/></div>
@@ -31,7 +62,7 @@
 	</c:forEach>
 	
 	<h2>Закупки Клієнта</h2>
-	<table>
+	<table style="margin-left:36%;">
 	<tr>
 	<th>Дата замовлення</th>
 	<th>Адреса доставки</th>

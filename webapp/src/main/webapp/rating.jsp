@@ -31,7 +31,9 @@
 	<th>Контактний телефон</th>
 	<th>Альтернативний телефон</th>
 	<th>Рейтинг</th>
+	<th>Закупівлі на сумму</th>
 	</tr>
+    <%! private int count = 0; %>
 	<c:forEach var="user" varStatus="status" items="${users}">
     <tr>
     <td>
@@ -65,9 +67,13 @@
     	<c:out value="${user.tel2}"/>
     </td>
     <td>
-        	<c:out value="${user.rating}"/>
-     </td>
+        	<%= ++count %>
+    </td>
+    <td>
+         	<c:out value="${user.rating}"/> грн.
+    </td>
     </tr>
+
 	</c:forEach>
 	</table>
 	<form method="GET" action='rating'>

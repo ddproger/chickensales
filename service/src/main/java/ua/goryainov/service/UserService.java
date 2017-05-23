@@ -2,6 +2,7 @@ package ua.goryainov.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -61,7 +62,7 @@ public class UserService {
 	}
 	public List<User> findLegal() {
 		userDao.openCurrentSession();
-		List<User> individumUser = new ArrayList<>();
+		List<User> individumUser = new LinkedList<>();
 		List<User> users = userDao.findAll();
 		for (User user:users) {
 			if(!user.getEDRPOU().equals("")){

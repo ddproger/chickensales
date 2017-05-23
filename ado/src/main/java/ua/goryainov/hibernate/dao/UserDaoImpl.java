@@ -85,7 +85,7 @@ public class UserDaoImpl implements TablesDao<User, Integer> {
 
 	@SuppressWarnings("unchecked")
 	public List<User> findAll() {
-		List<User> users = (List<User>) getCurrentSession().createQuery("from User u order by u.rating desc").list();
+		List<User> users = (List<User>) getCurrentSession().createQuery("from User order by rating asc").list();
 		int count=0;
 		for (User user : users) {
 			if(count<2){
@@ -100,9 +100,14 @@ public class UserDaoImpl implements TablesDao<User, Integer> {
 		return users;
 	}
 	public List<User> findTop() {
-		//List<User> users = (List<User>) getCurrentSession().createQuery("from User order by rating desc").list();
-		return findAll();
-
+		List<User> users = new LinkedList<>(getCurrentSession().createQuery("from User order by rating").list());
+		users.sort(new Comparator<User>() {
+			@Override
+			public int compare(User user, User t1) {
+				if(user.getRating()<t1.getRating())return 1; else return -1;
+			}
+		});
+		return users;
 	}
 
 	public List<User> findTop(String from, String to) {

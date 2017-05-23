@@ -18,7 +18,7 @@
     <a <c:if test = "${group=='legal'}">style="color:white"</c:if> href="customers?group=legal">Юридичні особи</a>
 	<form method="POST" action='action' name="actionFrm">
 	
-	<table>
+	<table id='users'>
 	<tr>
 	<th>Відмітити</th>
 	<th <c:if test = "${group!=null}">hidden</c:if>>Особа</th>
