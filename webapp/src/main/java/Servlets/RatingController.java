@@ -59,7 +59,8 @@ public class RatingController extends HttpServlet {
 		}
 		if(action!=null&&action.equals("import")) {
 			ExcelImportService.saveToFile(users,"webapp/src/main/webapp/tmp/newBook.xls");
-
+			response.sendRedirect("/download");
+			return;
 		}
 		request.setAttribute("users", users);
 		forward = SHOW_ALL;

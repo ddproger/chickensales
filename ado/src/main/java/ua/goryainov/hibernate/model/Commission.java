@@ -22,7 +22,12 @@ public class Commission {
 	private String deliveryAdress;
 	private Status status;
 	private Set<OrderProduct> orderProductList = new HashSet<OrderProduct>(0);
-	//@OneToMany(mappedBy = "order", fetch = FetchType.EAGER)	
+	@Transient
+    private int count=0;
+    @Transient
+    private long sum=0;
+
+    //@OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
 	//private Set<OrderProduct> orderProductList = new HashSet<OrderProduct>();
 		
 	public Commission()
@@ -97,7 +102,36 @@ public class Commission {
     public void setOrderProduct(Set<OrderProduct> orderProductList){
 		this.orderProductList=orderProductList;
 	}
-    @Override
+
+    @Transient
+	public int getCount(){
+        if(count!=0) {
+            int count = 0;
+            for (OrderProduct orderProduct : orderProductList) {
+                count += orderProduct.getCount();
+            }
+            return count;
+        }else return this.count;
+    }
+    @Transient
+	public long getSum(){
+	    if(sum!=0) {
+            long sum = 0;
+            for (OrderProduct orderProduct : orderProductList) {
+                sum += orderProduct.getPrice() * orderProduct.getCount();
+            }
+            return sum;
+        }else return this.sum;
+    }
+    @Transient
+    public void setCount(int count) {
+        this.count = getCount()+count;
+    }
+    @Transient
+    public void setSum(long sum) {
+        this.sum = getSum()+sum;
+    }
+	@Override
 	public String toString() {
 		return "Order [orderId=" + orderId + ", userName=" + user.getName() + ", date=" + date + ", deliveryAdress=" + deliveryAdress + ", status=" + status.getStatusId() + "orderProductList=" + orderProductList + "]";
 	}

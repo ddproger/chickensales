@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="calendar" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE HTML">
 <html>
 <head>
@@ -60,7 +61,31 @@
 	<div>Назва: <c:out value="${action.name}"/></div>
 	<div>Дата: <c:out value="${action.endDate}"/></div>
 	</c:forEach>
-	
+
+
+    <h2>Закупки Клієнта по місяцям</h2>
+    	<table style="margin-left:36%;">
+    	<tr>
+    	<th>Дата замовленнь</th>
+    	<th>Кількість товарів</th>
+    	<th>На сумму</th>
+    	</tr>
+    	<c:forEach items="${ordersGroupByPeriod}" var="entry">
+    	<tr>
+         <td>
+         <calendar:formatDate  value="${entry[0]}"
+                                 pattern="MM-yyyy"/>
+        </td>
+         <td>
+        	<c:out value="${entry[1]}"/>
+        </td>
+        <td>
+                	<c:out value="${entry[2]}"/>
+        </td>
+
+        </tr>
+    	</c:forEach>
+    	</table>
 	<h2>Закупки Клієнта</h2>
 	<table style="margin-left:36%;">
 	<tr>
@@ -79,9 +104,9 @@
     </td>
     <td>
     	<select name="status[<c:out value="${order.orderId}"/>]">
-	    <option disabled>Статус замовлення</option>	    
+	    <option disabled>Статус замовлення</option>
 	    <c:forEach var="status" items="${statuses}">
-	    <option <c:if test="${status.statusId eq order.status.statusId}">selected='selected'</c:if> 
+	    <option <c:if test="${status.statusId eq order.status.statusId}">selected='selected'</c:if>
 	    	value="<c:out value="${status.statusId}"/>"><c:out value="${status.name}"/></option>
 	    </c:forEach>
 	   </select>

@@ -50,6 +50,13 @@ public class OrderService {
 		orderDao.closeCurrentSession();
 		return orders;
 	}
+	public List<?> findGrouped(int userId) {
+		orderDao.openCurrentSession();
+		List<?> orders = orderDao.findGrouped(userId);
+		orderDao.closeCurrentSession();
+		return orders;
+	}
+
 	public void deleteAll() {
 		orderDao.openCurrentSessionwithTransaction();
 		orderDao.deleteAll();

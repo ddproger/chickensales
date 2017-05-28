@@ -95,5 +95,14 @@ public class OrderDaoImpl implements TablesDao<Commission, Integer> {
 		// TODO Auto-generated method stub
 		Commission order = (Commission) getCurrentSession().get(Commission.class, id);
 		return order;
-	}	
+	}
+
+    public List<?> findGrouped(int userId) {
+		List<?> lst = getCurrentSession().createSQLQuery("Select c.date as date, sum(op.count) as count, sum(op.count*op.price) as sum from user as u " +
+														"right join commission as c on u.userid = c.userid " +
+														"right join orderproduct as op on op.orderid=c.orderid " +
+														"where u.userid="+userId+
+														" group by c.date").list();
+		return lst;
+	}
 }
